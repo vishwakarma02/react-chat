@@ -1,38 +1,76 @@
+* {
+  font-family: 'Gochi Hand',
+    cursive;
+  letter-spacing: 0.8px;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100vh;
+  justify-content: space-between;
 }
 
-.App-link {
-  color: #61dafb;
+header {
+  text-align: center;
+  font-size: 1.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.chatroom {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-width: 576px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 32px 0;
+}
+
+.figure {
+  margin: 0 12px;
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.figure img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.message.sent {
+  flex-direction: row-reverse;
+}
+
+.message p {
+  margin: 0;
+  max-width: 60vw;
+  border-radius: 12px;
+  background: linear-gradient(303deg, #f12711, #f5af19);
+  padding: 12px;
+}
+
+.message.sent p {
+  background: linear-gradient(303deg, #a04666, #bd3f32);
+}
+
+.submit__wrapper {
+  display: flex;
+  padding: 0 72px;
+  margin-bottom: 16px;
+  position: sticky;
+  bottom: 16px;
+}
+
+.submit__input {
+  flex-grow: 1;
 }
