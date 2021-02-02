@@ -52,7 +52,7 @@ const ChatMessage = (props) => {
 const ChatRoom = () => {
   const dummy = useRef();
   const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(2500);
+  const query = messagesRef.orderBy("createdAt").limit(500);
   const [messages] = useCollectionData(query, { idField: "id" });
   const [formValue, setFormValue] = useState("");
   const sendMessage = async (e) => {
