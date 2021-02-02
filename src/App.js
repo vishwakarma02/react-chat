@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from "react";
 import { useRef, useState } from "react";
 import "./App.css";
 
@@ -37,14 +37,22 @@ const SignIn = () => {
 // };
 
 const ChatMessage = (props) => {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL, createdAt, displayName } = props.message;
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
+  const date =
+    createdAt && createdAt.seconds ? new Date(createdAt.seconds * 1000) : "";
   return (
     <div className={`message ${messageClass}`}>
       <figure className="figure">
         <img src={photoURL} />
       </figure>
-      <p>{text}</p>
+      <div className="message__wrapper">
+        <span className="message__name">{displayName}</span>
+        <p>{text}</p>
+        <span className="message__time">{createdAt && createdAt.seconds
+          ? `${date.getHours()}:${date.getMinutes()}`
+          : ""}</span>
+      </div>
     </div>
   );
 };
@@ -52,23 +60,26 @@ const ChatMessage = (props) => {
 const ChatRoom = () => {
   const dummy = useRef();
   const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(500);
+  const query = messagesRef.orderBy("createdAt").limit(2500);
   const [messages] = useCollectionData(query, { idField: "id" });
   const [formValue, setFormValue] = useState("");
   const sendMessage = async (e) => {
-    e.preventDefault();
-    const { uid, photoURL } = auth.currentUser;
-    console.log(auth.currentUser);
+    if (formValue !== "") {
+      e.preventDefault();
+      const { uid, photoURL, displayName } = auth.currentUser;
+      console.log(auth.currentUser);
 
-    await messagesRef.add({
-      text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      photoURL,
-    });
+      await messagesRef.add({
+        text: formValue,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid,
+        photoURL,
+        displayName,
+      });
 
-    setFormValue("");
-    dummy.current.scrollIntoView({ behavior: "smooth" });
+      setFormValue("");
+      dummy.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -87,7 +98,7 @@ const ChatRoom = () => {
             setFormValue(e.target.value);
           }}
         />
-        <button type="submit">send</button>
+        <button type="submit" className={formValue === "" ? 'submit disabled': 'submit'}>send</button>
       </form>
     </>
   );
@@ -100,7 +111,12 @@ const App = () => {
   return (
     <div className="App">
       <header className="chatroom">Dhaniya Chat</header>
-      <section style={{ background: "#fddd96" }}>
+      <section
+        style={{
+          background: "#fddd96",
+          boxShadow: "inset -1px -8px 14px 6px rgb(0 0 0 / 20%)",
+        }}
+      >
         {user ? <ChatRoom /> : <SignIn />}
       </section>
     </div>
