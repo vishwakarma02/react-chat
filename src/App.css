@@ -7,8 +7,8 @@
 .App {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   justify-content: space-between;
+  min-height: 100vh;
 }
 
 header {
@@ -19,12 +19,34 @@ header {
 .chatroom {
   text-align: center;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  max-width: 576px;
+  justify-content: space-between;
+  /* max-width: 576px; */
   margin-left: auto;
   margin-right: auto;
-  padding: 32px 0;
+  padding: 16px;
+  background: #383838;
+  width: 100%;
+  box-sizing: border-box;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.auth-button {
+  background: #4a4a4a;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  color: white;
+  box-shadow: 0px 0px 7px 1px dimgrey;
+}
+
+.auth-button.signIn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .figure {
@@ -59,6 +81,10 @@ header {
   background: linear-gradient(303deg, #FFB75E, #ED8F03);
   padding: 12px;
   box-shadow: 8px 8px 12px 2px rgb(0 0 0 / 20%);
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.125rem;
+  letter-spacing: 0.05rem;
+  word-break: break-word;
 }
 
 .message__wrapper {
@@ -71,19 +97,26 @@ header {
   top: -14px;
   left: 0;
   white-space: nowrap;
+  font-family: 'Varela Round',
+    sans-serif;
+  color: #6d6d6d;
 }
 
 .message__time {
   position: absolute;
-  bottom: -14px;
-  font-size: 0.75rem;
+  bottom: -16px;
+  font-size: 0.625rem;
   right: 0;
+  font-family: 'Varela Round', sans-serif;
+  font-weight: 600;
+  color: #6d6d6d;
 }
 
 .message.sent p {
   background: linear-gradient(303deg, #9abf55, #efcf35);
   box-shadow: 8px 8px 15px 2px rgb(0 0 0 / 20%);
 }
+
 .message.sent .message__name {
   left: initial;
   right: 0;
@@ -117,4 +150,31 @@ header {
   border-radius: 8px 0 0 8px;
   border: none;
   box-shadow: 4px 4px 5px #aaaaaa;
+}
+
+.scroll-to-bottom {
+  position: fixed;
+  bottom: 20px;
+  right: 12px;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 8px 8px 12px 2px rgb(0 0 0 / 20%);
+}
+
+.scroll-to-bottom:focus {
+  outline: none;
+}
+
+.scroll-to-bottom::after {
+  content: '';
+  height: 0;
+  width: 0;
+  border: 8px solid transparent;
+  border-top: 8px solid black;
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

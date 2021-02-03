@@ -9,6 +9,8 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
+// import bgImg from './assets/bg-img.jpg';
+
 firebase.initializeApp({
   apiKey: "AIzaSyARJGxiyIUFDyJr-MpNKvzw-wI350eYXfU",
   authDomain: "react-chat-bb0a1.firebaseapp.com",
@@ -27,14 +29,14 @@ const SignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
   };
-  return <button onClick={signInWithGoogle}>Sign In with Google</button>;
+  return <button className="auth-button signIn" onClick={signInWithGoogle}>Sign In with Google</button>;
 };
 
-// const signOut = () => {
-//   return (
-//     auth.currentUser && <button onClick={() => auth.signOut()}>Sign Out</button>
-//   );
-// };
+const SignOut = () => {
+  return (
+    auth.currentUser && <button className="auth-button" onClick={() => auth.signOut()}>Sign Out</button>
+  );
+};
 
 const ChatMessage = (props) => {
   const { text, uid, photoURL, createdAt, displayName } = props.message;
@@ -49,9 +51,17 @@ const ChatMessage = (props) => {
       <div className="message__wrapper">
         <span className="message__name">{displayName}</span>
         <p>{text}</p>
-        <span className="message__time">{createdAt && createdAt.seconds
-          ? `${date.getHours()}:${date.getMinutes()}`
-          : ""}</span>
+        <span className="message__time">
+          {createdAt && createdAt.seconds
+            ? `${date
+                .getHours()
+                .toString()
+                .padStart(2, "0")}:${date
+                .getMinutes()
+                .toString()
+                .padStart(2, "0")}`
+            : ""}
+        </span>
       </div>
     </div>
   );
@@ -98,7 +108,12 @@ const ChatRoom = () => {
             setFormValue(e.target.value);
           }}
         />
-        <button type="submit" className={formValue === "" ? 'submit disabled': 'submit'}>send</button>
+        <button
+          type="submit"
+          className={formValue === "" ? "submit disabled" : "submit"}
+        >
+          send
+        </button>
       </form>
     </>
   );
@@ -108,17 +123,29 @@ const App = () => {
   // return <div className="App">React To DO</div>;
 
   const [user] = useAuthState(auth);
+  const scrollToBottom = () => {
+    var objDiv = document.querySelector(".App");
+    window.scrollTo(0, objDiv.scrollHeight);
+    console.log(objDiv.scrollHeight);
+  }
   return (
     <div className="App">
-      <header className="chatroom">Dhaniya Chat</header>
+      <header className="chatroom">
+        🍀Dhaniya Chat <SignOut />
+      </header>
       <section
         style={{
           background: "#fddd96",
           boxShadow: "inset -1px -8px 14px 6px rgb(0 0 0 / 20%)",
+          paddingTop: "16px",
+          flexGrow: "1",
         }}
       >
         {user ? <ChatRoom /> : <SignIn />}
       </section>
+      {auth.currentUser && (
+        <button className="scroll-to-bottom" onClick={scrollToBottom}></button>
+      )}
     </div>
   );
 };
