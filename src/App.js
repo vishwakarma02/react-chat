@@ -2,7 +2,7 @@ import React from "react";
 import { useRef, useState } from "react";
 import "./App.css";
 
-import firebase from "firebase/app";
+import firebase from "firebase";
 import "firebase/firestore";
 import "firebase/auth";
 
@@ -120,7 +120,14 @@ const ChatRoom = () => {
 };
 
 const App = () => {
-  // return <div className="App">React To DO</div>;
+  React.useEffect(() => {
+    const msg = firebase.messaging();
+    msg.requestPermission().then(() => {
+      return msg.getToken();
+    }).then(data => {
+      console.warn("token", data)
+    });
+  });
 
   const [user] = useAuthState(auth);
   const scrollToBottom = () => {
