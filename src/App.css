@@ -178,3 +178,16 @@ header {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.network-indicator {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: #38ef7d;
+  margin-left: 16px;
+}
+
+.network-indicator.offline {
+  background-color: tomato;
+}

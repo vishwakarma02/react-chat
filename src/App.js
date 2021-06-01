@@ -9,6 +9,8 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
+import Header from './components/header';
+
 // import bgImg from './assets/bg-img.jpg';
 
 firebase.initializeApp({
@@ -137,9 +139,9 @@ const App = () => {
   }
   return (
     <div className="App">
-      <header className="chatroom">
-        🍀Dhaniya Chat <SignOut />
-      </header>
+      <Header auth="auth">
+        <SignOut />
+      </Header>
       <section
         style={{
           background: "#fddd96",
