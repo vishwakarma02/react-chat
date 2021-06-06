@@ -11,8 +11,6 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import Header from './components/header';
 
-// import bgImg from './assets/bg-img.jpg';
-
 firebase.initializeApp({
   apiKey: "AIzaSyARJGxiyIUFDyJr-MpNKvzw-wI350eYXfU",
   authDomain: "react-chat-bb0a1.firebaseapp.com",
@@ -31,7 +29,11 @@ const SignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
   };
-  return <button className="auth-button signIn" onClick={signInWithGoogle}>Sign In with Google</button>;
+  return <div className="signIn" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+      <button className="auth-button" onClick={signInWithGoogle}>Sign In with Google</button>
+      <br />
+      <span style={{textAlign: 'center'}}>Managed by Google <br />___ <br /> We are only storing your name and display picture.</span>
+    </div>;
 };
 
 const SignOut = () => {
@@ -39,6 +41,32 @@ const SignOut = () => {
     auth.currentUser && <button className="auth-button" onClick={() => auth.signOut()}>Sign Out</button>
   );
 };
+
+const people = [];
+const getAllPeopleInChat = (messages) => {
+  if (messages) {
+    const map = new Map();
+    for (const item of messages) {
+      if (!(map.has(item.uid) && map.has(item.displayName))) {
+        map.set(item.uid, true);
+        map.set(item.displayName, true);
+        if (item.displayName) { // because earlier version don't have names
+          people.push({
+            uid: item.uid,
+            displayName: item.displayName,
+            photoURL: item.photoURL,
+          });
+        }
+      }
+    }
+    console.log(people);
+  }
+}
+
+const scrollToBottom = () => {
+  var objDiv = document.querySelector(".App");
+  window.scrollTo(0, objDiv.scrollHeight);
+}
 
 const ChatMessage = (props) => {
   const { text, uid, photoURL, createdAt, displayName } = props.message;
@@ -70,7 +98,6 @@ const ChatMessage = (props) => {
 };
 
 const ChatRoom = () => {
-  const dummy = useRef();
   const messagesRef = firestore.collection("messages");
   const query = messagesRef.orderBy("createdAt").limit(2500);
   const [messages] = useCollectionData(query, { idField: "id" });
@@ -90,16 +117,19 @@ const ChatRoom = () => {
       });
 
       setFormValue("");
-      dummy.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  React.useEffect(() => {
+    getAllPeopleInChat(messages);
+    scrollToBottom();
+  }, [messages])
 
   return (
     <>
       <div>
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
-        <div ref={dummy}></div>
       </div>
 
       <form className="submit__wrapper" onSubmit={sendMessage}>
@@ -129,14 +159,9 @@ const App = () => {
     }).then(data => {
       console.warn("token", data)
     });
-  });
+  }, []);
 
   const [user] = useAuthState(auth);
-  const scrollToBottom = () => {
-    var objDiv = document.querySelector(".App");
-    window.scrollTo(0, objDiv.scrollHeight);
-    console.log(objDiv.scrollHeight);
-  }
   return (
     <div className="App">
       <Header auth="auth">
