@@ -42,8 +42,8 @@ const SignOut = () => {
   );
 };
 
-const people = [];
 const getAllPeopleInChat = (messages) => {
+  const people = [];
   if (messages) {
     const map = new Map();
     for (const item of messages) {
@@ -61,6 +61,17 @@ const getAllPeopleInChat = (messages) => {
     }
     console.log(people);
   }
+  const peopleList = people.map((p, index) => {
+    return <img
+      height="32"
+      width="32"
+      src={p.photoURL}
+      alt={p.displayName}
+      title={p.displayName}
+      className="people__img"
+      key={index}/>
+  })
+  return <div className="people__list">{peopleList}</div>;
 }
 
 const scrollToBottom = () => {
@@ -121,17 +132,16 @@ const ChatRoom = () => {
   };
 
   React.useEffect(() => {
-    getAllPeopleInChat(messages);
     scrollToBottom();
   }, [messages])
 
   return (
     <>
+      {getAllPeopleInChat(messages)}
       <div>
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
       </div>
-
       <form className="submit__wrapper" onSubmit={sendMessage}>
         <input
           className="submit__input"

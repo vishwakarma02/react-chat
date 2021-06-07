@@ -189,5 +189,26 @@ header {
 }
 
 .network-indicator.offline {
-  background-color: tomato;
+  background-color: #acc24f;
 }
+ .people__list {
+   position: sticky;
+   top: 64px;
+   z-index: 9;
+   display: flex;
+   flex-wrap: wrap;
+   background-color: #acc24f;
+   border-radius: 0 0 4px 4px;
+   margin-bottom: 16px;
+ }
+
+ .people__img {
+   display: block;
+   min-height: 32px;
+   min-width: 32px;
+   object-fit: cover;
+   border-radius: 50%;
+   overflow: hidden;
+   margin: 4px;
+   box-shadow: 0 0 4px 0px #566128;
+ }
