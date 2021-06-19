@@ -136,7 +136,7 @@ const ChatRoom = () => {
   }, [messages])
 
   return (
-    <>
+    <React.Fragment>
       {getAllPeopleInChat(messages)}
       <div>
         {messages &&
@@ -157,7 +157,7 @@ const ChatRoom = () => {
           send
         </button>
       </form>
-    </>
+    </React.Fragment>
   );
 };
 

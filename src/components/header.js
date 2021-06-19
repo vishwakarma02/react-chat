@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+
 class Header extends React.Component {
     constructor(props) {
         super(props);
@@ -26,7 +28,7 @@ class Header extends React.Component {
     };
 
     render() {
-        return <>
+        return <React.Fragment>
             <header className="chatroom">
                 <div>
                     🍀Dhaniya Chat
@@ -34,8 +36,13 @@ class Header extends React.Component {
                 </div>
                 {this.props.children}
             </header>
-        </>
+        </React.Fragment>
     }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+    console.log(state);
+    return state;
+}
+
+export default connect(mapStateToProps)(Header);
